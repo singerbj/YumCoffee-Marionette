@@ -227,7 +227,6 @@ var Router = Backbone.Marionette.AppRouter.extend({
                         //apply coffee to each rating
                         _.forEach(ratings.models, function(rating) {
                             rating.attributes.coffee = coffeeMap[rating.attributes.coffee_id].attributes;
-                            console.log(rating);
                         });
                        App.page.show(new RatingsView({ collection: ratings }));
                     }
