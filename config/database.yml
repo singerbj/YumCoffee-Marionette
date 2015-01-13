@@ -1,0 +1,35 @@
+default: &default
+  adapter: postgresql
+  database: yumcoffee
+  pool: 5
+  encoding: unicode
+  host: localhost
+  port: 4567
+  username: postgres
+  password: <%= ENV['coffeePass'] %>
+
+
+production: &default
+  adapter: postgresql
+  database: yumcoffee
+  pool: 5
+  encoding: unicode
+  host: localhost
+  port: 4567
+  username: postgres
+  password: <%= ENV['coffeePass'] %>
+
+
+development: &default
+  adapter: postgresql
+  database: yumcoffee
+  pool: 5
+  encoding: unicode
+  host: localhost
+  port: 4567
+  username: postgres
+  password: <%= ENV['coffeePass'] %>
+
+
+
+

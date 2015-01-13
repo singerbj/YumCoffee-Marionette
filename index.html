@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<!-- saved from url=(0051)http://getbootstrap.com/examples/jumbotron-narrow/# -->
+<html lang="en">
+<script id="tinyhippos-injected">if (window.top.ripple) {
+    window.top.ripple("bootstrap").inject(window, document);
+}</script>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Yum, Coffee!</title>        
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- <link href="./lib/bootstrap.min.css" rel="stylesheet"> -->
+
+</head>
+<body>
+     <div class="container">
+        <br>
+        <h1>Yum, Coffee!</h1>
+        <h4><i>Featuring Backbone Marionette</i></h4>
+        <nav class="navbar navbar-default">
+          <div class="container-fluid">
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+              <ul class="nav navbar-nav navbar-right">               
+                <li>
+                    <a href="#/coffee">Coffee</a>
+                </li>
+                <li>
+                    <a href="#/rating">Ratings</a>
+                </li>                
+            </div>
+          </div>
+        </nav>
+
+        <div id="form">          
+        </div>
+        <div id="page">          
+        </div>
+    </div>
+
+
+    <script type="text/template" id="noCoffeeTemplate">
+        <td>NO COFFEES</td>
+        <td></td>
+    </script>
+
+    <script type="text/template" id="coffeeTemplate">
+        <td><%= brand %></td>
+        <td><%= roast %></td>
+        <td>
+            <% for(var i = 0; i < avgRating; i++){ %>
+                <span class="glyphicon glyphicon-star"></span>
+            <% } %>
+        </td>
+        <td>
+            <button class="btn btn-danger pull-right" style="width: 70px" id="deleteCoffee">Delete</button>
+            <button class="btn btn-info pull-right" style="width: 70px" id="editCoffee">Edit</button>
+        </td>
+    </script>
+
+    <script type="text/template" id="coffeesTemplate">
+        <thead>                    
+            <tr>
+                <th>Brand</th>
+                <th>Roast</th>
+                <th>Average Rating</th>
+                <th>
+                    <a href="#/coffee/new" class="btn btn-success pull-right" style="width: 140px">Create Coffee</a>
+                </th>
+            </tr>
+        </thead>
+        <tbody id="tbody">
+        </tbody>
+    </script>
+
+    <script type="text/template" id="coffeeFormTemplate">
+        <legend><%= coffee ? 'Update' : 'Create' %> Coffee</legend>
+        <div class="form-group">
+            <label>Brand</label>
+            <br>
+            <input class="form-control" type="text" name="brand" id="brand" value="<%= coffee ? coffee.brand : '' %>"/>
+        </div>
+        <div class="form-group">
+            <label>Roast</label>
+            <br>
+            <input class="form-control" type="text" name="roast" id="roast" value="<%= coffee ? coffee.roast : '' %>"/>
+        </div>
+        <% if(coffee){ %>
+                <input type="hidden" name="id" id="id" value="<%= coffee ? coffee.id : '' %>"/>
+            <% }; %>
+        <hr>            
+        <button class="btn btn-primary pull-right"><%= coffee ? 'Update' : 'Create' %> Coffee</button>
+    </script>
+
+    <script type="text/template" id="noRatingTemplate">
+        <td>NO RATINGS</td>
+        <td></td>
+        <td></td>
+    </script>
+
+    <script type="text/template" id="ratingTemplate">
+        <td><%- coffee.brand + " " + coffee.roast %> Roast</td>
+        <td>
+            <% for(var i = 0; i < rating; i++){ %>
+                <span class="glyphicon glyphicon-star"></span>
+            <% } %>
+        </td>
+        <td><%= comment %></td>
+        <td>
+            <button class="btn btn-danger pull-right" style="width: 70px" id="deleteRating">Delete</button>
+            <button class="btn btn-info pull-right" style="width: 70px" id="editRating">Edit</button>            
+        </td>
+    </script>
+
+    <script type="text/template" id="ratingsTemplate">
+        <thead>                    
+            <tr>
+                <th>Coffee</th>
+                <th>Rating</th>
+                <th>Comment</th>
+                <th>
+                    <a href="#/rating/new" class="btn btn-success pull-right" style="width: 140px">Create Rating</a>
+                </th>
+            </tr>
+        </thead>
+        <tbody id="tbody">
+        </tbody>
+    </script>
+
+    <script type="text/template" id="ratingFormTemplate">
+        <legend><%= rating ? 'Edit' : 'Add' %> Rating</legend>
+        <div class="form-group">
+            <label>Coffee</label>
+            <br>
+            <select class="form-control" type="text" name="coffee_id" id="coffee_id" value="<%= rating ? rating.coffee_id : '' %>">
+                <% _.forEach(coffees, function(coffee){ %>
+                    <option value="<%= coffee.id %>" <%= rating && rating.coffee_id === coffee.id ? 'selected' : '' %>>
+                        <%= coffee.brand + " " + coffee.roast %> Roast
+                    </option>
+                <% }); %>  
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Rating</label>
+            <br>
+            <select class="form-control" type="text" name="rating" id="rating">               
+                <% _.forEach([1, 2, 3, 4, 5], function(i){ %>
+                    <option value="<%= i %>" <%= rating && rating.rating === (i + '') ? 'selected' : '' %>>
+                        <%= i %> Star<%= i < 2 ? '' : 's' %>
+                    </option>
+                <% }); %>                 
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Comments</label>
+            <br>
+            <input class="form-control" type="text" name="comment" id="comment" value="<%= rating ? rating.comment : '' %>"/>
+        </div>
+        <% if(rating){ %>
+            <input type="hidden" name="id" id="id" value="<%= rating ? rating.id : '' %>"/>
+        <% }; %>
+        <hr>
+        <button class="btn btn-primary pull-right"><%= rating ? 'Update' : 'Add' %> Rating</button>
+    </script>
+
+    
+    <script src="lib/jquery.js"></script>
+    <script src="lib/q.js"></script>
+    <script src="lib/underscore.js"></script>
+    <script src="lib/backbone.js"></script>
+    <script src="lib/backbone.marionette.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
